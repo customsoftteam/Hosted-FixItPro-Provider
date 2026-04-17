@@ -31,6 +31,14 @@ const corsOptions = {
   credentials: true,
 };
 
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      callback(null, true); // allow all origins
+    },
+  })
+)
+
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
