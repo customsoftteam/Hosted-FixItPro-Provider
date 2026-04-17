@@ -5,32 +5,6 @@ const apiRoutes = require('./src/routes');
 
 const app = express();
 
-const defaultOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
-const configuredOrigins = [process.env.CLIENT_URL, process.env.CLIENT_URLS]
-  .filter(Boolean)
-  .flatMap((value) =>
-    String(value)
-      .split(',')
-      .map((origin) => origin.trim().replace(/\/$/, ''))
-      .filter(Boolean)
-  );
-
-const allowedOrigins = new Set([...defaultOrigins, ...configuredOrigins]);
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-
-    const normalizedOrigin = String(origin).trim().replace(/\/$/, '');
-    if (allowedOrigins.has(normalizedOrigin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error(`CORS blocked for origin ${origin}`));
-  },
-  credentials: true,
-};
-
 app.use(
   cors({
     origin: function (origin, callback) {
